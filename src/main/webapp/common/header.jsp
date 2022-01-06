@@ -30,3 +30,4 @@
             </ul>
         </nav>
     </header>
+<main class="p-8">
