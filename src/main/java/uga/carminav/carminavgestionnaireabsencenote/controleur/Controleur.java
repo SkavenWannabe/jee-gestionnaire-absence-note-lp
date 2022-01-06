@@ -63,18 +63,18 @@ public class Controleur extends HttpServlet {
         String prenom = request.getParameter("prenom");
 
         request.setAttribute("etudiant", new Etudiant(id, nom, prenom));
-        loadJSP("/detailListEtudiant.jsp", request, response);
+        includeJSP("/detailListEtudiant.jsp", request, response);
     }
 
     //
     private void doAccueil(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException {
-        loadJSP(urlAccueil, request, response);
+        includeJSP(urlAccueil, request, response);
     }
 
     private void doListeEtudiants(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
-        loadJSP(urlListeEtudiants, request, response);
+        includeJSP(urlListeEtudiants, request, response);
     }
 
 
@@ -87,8 +87,8 @@ public class Controleur extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public void loadJSP(String url, HttpServletRequest request,
-                        HttpServletResponse response) throws ServletException, IOException {
+    public void includeJSP(String url, HttpServletRequest request,
+                           HttpServletResponse response) throws ServletException, IOException {
 
 //		L'interface RequestDispatcher permet de transférer le contrôle à une autre servlet
 //		Deux méthodes possibles :
@@ -100,6 +100,21 @@ public class Controleur extends HttpServlet {
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher(url);
         rd.include(request, response);
+    }
+
+    public void loadJSP(String url, HttpServletRequest request,
+                           HttpServletResponse response) throws ServletException, IOException {
+
+//		L'interface RequestDispatcher permet de transférer le contrôle à une autre servlet
+//		Deux méthodes possibles :
+//		- forward() : donne le contrôle à une autre servlet. Annule le flux de sortie de la servlet courante
+//		- include() : inclus dynamiquement une autre servlet
+//			+ le contrôle est donné à une autre servlet puis revient à la servlet courante (sorte d'appel de fonction).
+//			+ Le flux de sortie n'est pas supprimé et les deux se cumulent
+
+        ServletContext sc = getServletContext();
+        RequestDispatcher rd = sc.getRequestDispatcher(url);
+        rd.forward(request, response);
     }
 
 
