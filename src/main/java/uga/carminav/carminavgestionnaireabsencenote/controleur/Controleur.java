@@ -1,5 +1,7 @@
 package uga.carminav.carminavgestionnaireabsencenote.controleur;
 
+import uga.carminav.carminavgestionnaireabsencenote.Etudiant;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,11 +17,11 @@ public class Controleur extends HttpServlet {
     private String urlAccueil;
     private String urlListeEtudiants;
 
-
     // INIT
     public void init() throws ServletException {
         urlAccueil = getInitParameter("urlAccueil");
         urlListeEtudiants = getInitParameter("urlListeEtudiants");
+
     }
 
     // POST
@@ -46,24 +48,32 @@ public class Controleur extends HttpServlet {
 
         // Exécution action
         if (methode.equals("get") && id.equals("/index")) {
-            doListeEtudiants(request, response);
+            doDetail(request, response);
         } else {
             doAccueil(request, response);
         }
     }
 
     //
+    private void doDetail(HttpServletRequest request,
+                           HttpServletResponse response) throws ServletException, IOException {
+        String temp = request.getParameter("id");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+
+        request.setAttribute("etudiant", new Etudiant(id, nom, prenom));
+        loadJSP("/detailListEtudiant.jsp", request, response);
+    }
+
+    //
     private void doAccueil(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException {
-
-
         loadJSP(urlAccueil, request, response);
     }
 
     private void doListeEtudiants(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
-
-
         loadJSP(urlListeEtudiants, request, response);
     }
 
@@ -89,7 +99,7 @@ public class Controleur extends HttpServlet {
 
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher(url);
-        rd.forward(request, response);
+        rd.include(request, response);
     }
 
 

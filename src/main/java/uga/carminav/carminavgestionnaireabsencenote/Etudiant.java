@@ -40,4 +40,8 @@ public class Etudiant {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+
+	public String toUrlGet() {
+		return "id=" + getId() + "&nom=" + getNom() + "&prenom=" + getPrenom();
+	}
 }

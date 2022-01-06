@@ -23,7 +23,7 @@ public class GestionFactory {
 	}
 
 	// Initialisation des absences
-	private static final HashMap<Integer, Integer> intializelistEtudiantAbsence() {
+	private static HashMap<Integer, Integer> intializelistEtudiantAbsence() {
 
 		// Association etudiant id -> absences
 		HashMap<Integer, Integer> listEtudiantAbsenceTemp = new HashMap<>();
