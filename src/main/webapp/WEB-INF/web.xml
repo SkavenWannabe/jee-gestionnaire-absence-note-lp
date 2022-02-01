@@ -23,6 +23,11 @@
         <param-value>TODO</param-value>
     </context-param>
 
+    <!-- param servlet -->
+    <context-param>
+        <param-name>servletListeEtudiant</param-name>
+        <param-value>/listeEtudiant</param-value>
+    </context-param>
     <!-- Servlet controleur -->
     <servlet>
         <servlet-name>controleur</servlet-name>
@@ -34,6 +39,10 @@
         <init-param>
             <param-name>urlListeEtudiants</param-name>
             <param-value>/listeEtudiants.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>servletListeEtudiant</param-name>
+            <param-value>/listeEtudiant</param-value>
         </init-param>
     </servlet>
 

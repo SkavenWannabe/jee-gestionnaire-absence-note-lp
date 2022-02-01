@@ -17,11 +17,15 @@ public class Controleur extends HttpServlet {
     private String urlAccueil;
     private String urlListeEtudiants;
 
+    // ACTION
+    private String m_doListeEtudiants;
+
     // INIT
     public void init() throws ServletException {
         urlAccueil = getInitParameter("urlAccueil");
         urlListeEtudiants = getInitParameter("urlListeEtudiants");
 
+        m_doListeEtudiants = getInitParameter("servletListeEtudiant");
     }
 
     // POST
@@ -39,16 +43,15 @@ public class Controleur extends HttpServlet {
         String methode = request.getMethod().toLowerCase();
 
         // On récupère l'action à exécuter
-        String id = request.getPathInfo();
-        if (id == null) {
-            id = "/index";
-            System.out.println("id == null");
-        }
-        System.out.println("GAN : id = " + id);
+    //TODO : fix loading infinite
+        String pathInfo = request.getPathInfo();
+        if (pathInfo == null)
+            pathInfo = "/index";
+
 
         // Exécution action
-        if (methode.equals("get") && id.equals("/index")) {
-            doDetail(request, response);
+        if (methode.equals("get") && pathInfo.equals(m_doListeEtudiants)) {
+            doListeEtudiants(request, response);
         } else {
             doAccueil(request, response);
         }
@@ -74,7 +77,7 @@ public class Controleur extends HttpServlet {
 
     private void doListeEtudiants(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
-        includeJSP(urlListeEtudiants, request, response);
+        includeJSP  (urlListeEtudiants, request, response);
     }
 
 
@@ -116,6 +119,4 @@ public class Controleur extends HttpServlet {
         RequestDispatcher rd = sc.getRequestDispatcher(url);
         rd.forward(request, response);
     }
-
-
 }

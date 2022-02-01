@@ -16,7 +16,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<%= application.getContextPath()%><%=application.getInitParameter("urlListeEtudiants")%>"
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletListeEtudiant")%>"
                        class="px-4 py-2 hover:text-slate-800 hover:bg-white">
                         Etudiants
                     </a>
