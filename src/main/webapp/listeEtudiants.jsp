@@ -1,10 +1,8 @@
+<%@ page import="uga.carminav.carminavgestionnaireabsencenote.data.Etudiant" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="common/header.jsp"/>
 <h1 class="text-2xl border-b-2 border-slate-800">Liste des étudiants</h1>
-<%@page import="uga.carminav.carminavgestionnaireabsencenote.Etudiant"%>
-<%@page import="uga.carminav.carminavgestionnaireabsencenote.GestionFactory"%>
-<%@ page import="java.util.Collection"%>
-<%@ page import="java.util.Iterator"%>
+<jsp:useBean id="etudiants" type="java.util.List<uga.carminav.carminavgestionnaireabsencenote.data.Etudiant>" scope="request"/>
 <article class="border border-slate-800 rounded m-4 p-4">
     <p>Ici vous pouvez :</p>
     <ul class="ml-8 list-disc">
@@ -26,18 +24,24 @@
         </tr>
     </thead>
     <tbody>
-        <%
-            GestionFactory gf = new GestionFactory();
-
-            Collection<Etudiant> etudiants = gf.getEtudiants();
-
-            Iterator<Etudiant> iterator = etudiants.iterator();
-            while(iterator.hasNext()) {
-                Etudiant et = iterator.next();
-                String pageDetail = "/do/detailListEtudiant.jsp?" + et.toUrlGet();
-        %>
-
-        <jsp:include page="<%=pageDetail%>"/>
+        <% for (Etudiant etudiant : etudiants) { %>
+            <tr class="hover:text-white hover:bg-slate-800 hover:cursor-pointer">
+                <td class="border-2 border-slate-800 text-center">
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
+                        <%= etudiant.getId()%>
+                    </a>
+                </td>
+                <td class="border-2 border-slate-800">
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
+                        <%= etudiant.getNom()%>
+                    </a>
+                </td>
+                <td class="border-2 border-slate-800">
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
+                        <%= etudiant.getPrenom()%>
+                    </a>
+                </td>
+            </tr>
 
         <%  } %>
     </tbody>

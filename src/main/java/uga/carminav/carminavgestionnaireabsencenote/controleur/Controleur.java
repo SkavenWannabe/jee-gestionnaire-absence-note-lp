@@ -1,6 +1,10 @@
 package uga.carminav.carminavgestionnaireabsencenote.controleur;
 
-import uga.carminav.carminavgestionnaireabsencenote.Etudiant;
+import uga.carminav.carminavgestionnaireabsencenote.data.Etudiant;
+import uga.carminav.carminavgestionnaireabsencenote.data.EtudiantDAO;
+import uga.carminav.carminavgestionnaireabsencenote.data.GestionFactory;
+import uga.carminav.carminavgestionnaireabsencenote.data.Groupe;
+import uga.carminav.carminavgestionnaireabsencenote.data.GroupeDAO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Controleur extends HttpServlet {
@@ -16,16 +21,44 @@ public class Controleur extends HttpServlet {
     // URL
     private String urlAccueil;
     private String urlListeEtudiants;
+    private String urlDetailEtudiants;
+
 
     // ACTION
     private String m_doListeEtudiants;
+    private String m_doDetailEtudiant;
 
     // INIT
     public void init() throws ServletException {
         urlAccueil = getInitParameter("urlAccueil");
         urlListeEtudiants = getInitParameter("urlListeEtudiants");
+        urlDetailEtudiants = getInitParameter("urlDetailEtudiant");
 
         m_doListeEtudiants = getInitParameter("servletListeEtudiant");
+        m_doDetailEtudiant = getInitParameter("servletDetailEtudiant");
+
+        // Création de la factory permettant la création d'EntityManager
+        // (gestion des transactions)
+        GestionFactory.open();
+
+        ///// INITIALISATION DE LA BD
+        // Normalement l'initialisation se fait directement dans la base de données
+        if ((GroupeDAO.getAll().size() == 0) && (EtudiantDAO.getAll().size() == 0)) {
+
+            // Creation des groupes
+            Groupe MIAM = GroupeDAO.create("miam");
+            Groupe SIMO = GroupeDAO.create("SIMO");
+            Groupe MESSI = GroupeDAO.create("MESSI");
+
+            // Creation des étudiants
+            EtudiantDAO.create("Francis", "Brunet-Manquat", MIAM, 20);
+            EtudiantDAO.create("Philippe", "Martin", MIAM, 19);
+            EtudiantDAO.create("Mario", "Cortes-Cornax", MIAM, 12);
+            EtudiantDAO.create("Françoise", "Coat", SIMO, 12);
+            EtudiantDAO.create("Laurent", "Bonnaud", MESSI, 12);
+            EtudiantDAO.create("Sébastien", "Bourdon", MESSI, 12);
+            EtudiantDAO.create("Mathieu", "Gatumel", SIMO, 12);
+        }
     }
 
     // POST
@@ -43,7 +76,6 @@ public class Controleur extends HttpServlet {
         String methode = request.getMethod().toLowerCase();
 
         // On récupère l'action à exécuter
-    //TODO : fix loading infinite
         String pathInfo = request.getPathInfo();
         if (pathInfo == null)
             pathInfo = "/index";
@@ -52,6 +84,8 @@ public class Controleur extends HttpServlet {
         // Exécution action
         if (methode.equals("get") && pathInfo.equals(m_doListeEtudiants)) {
             doListeEtudiants(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doDetailEtudiant)) {
+            doDetail(request, response);
         } else {
             doAccueil(request, response);
         }
@@ -60,13 +94,10 @@ public class Controleur extends HttpServlet {
     //
     private void doDetail(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
-        String temp = request.getParameter("id");
-        int id = Integer.parseInt(request.getParameter("id"));
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
+        Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
 
-        request.setAttribute("etudiant", new Etudiant(id, nom, prenom));
-        includeJSP("/detailListEtudiant.jsp", request, response);
+        request.setAttribute("etudiant", etudiant);
+        loadJSP(urlDetailEtudiants, request, response);
     }
 
     //
@@ -77,7 +108,13 @@ public class Controleur extends HttpServlet {
 
     private void doListeEtudiants(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
-        includeJSP  (urlListeEtudiants, request, response);
+        // Récupérer les étudiants
+        List<Etudiant> etudiants = EtudiantDAO.getAll();
+
+        // Ajouter les étudiants à la requête pour affichage
+        request.setAttribute("etudiants", etudiants);
+
+        loadJSP(urlListeEtudiants, request, response);
     }
 
 
