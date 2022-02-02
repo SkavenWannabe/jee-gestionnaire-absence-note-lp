@@ -22,20 +22,28 @@ public class Controleur extends HttpServlet {
     private String urlAccueil;
     private String urlListeEtudiants;
     private String urlDetailEtudiants;
+    private String urlListeGroupes;
+    private String urlDetailGroupe;
 
 
     // ACTION
     private String m_doListeEtudiants;
     private String m_doDetailEtudiant;
+    private String m_doListeGroupes;
+    private String m_doDetailGroupe;
 
     // INIT
     public void init() throws ServletException {
         urlAccueil = getInitParameter("urlAccueil");
         urlListeEtudiants = getInitParameter("urlListeEtudiants");
         urlDetailEtudiants = getInitParameter("urlDetailEtudiant");
+        urlListeGroupes = getInitParameter("urlListeGroupes");
+        urlDetailGroupe = getInitParameter("urlDetailGroupe");
 
-        m_doListeEtudiants = getInitParameter("servletListeEtudiant");
-        m_doDetailEtudiant = getInitParameter("servletDetailEtudiant");
+        m_doListeEtudiants = getServletContext().getInitParameter("servletListeEtudiants");
+        m_doDetailEtudiant = getServletContext().getInitParameter("servletDetailEtudiant");
+        m_doListeGroupes = getServletContext().getInitParameter("servletListeGroupes");
+        m_doDetailGroupe = getServletContext().getInitParameter("servletDetailGroupe");
 
         // Création de la factory permettant la création d'EntityManager
         // (gestion des transactions)
@@ -82,30 +90,37 @@ public class Controleur extends HttpServlet {
 
 
         // Exécution action
+        //Etudiant
         if (methode.equals("get") && pathInfo.equals(m_doListeEtudiants)) {
             doListeEtudiants(request, response);
         } else if(methode.equals("get") && pathInfo.equals(m_doDetailEtudiant)) {
-            doDetail(request, response);
-        } else {
+            doDetailEtudiant(request, response);
+        }
+        //Groupe
+        else if(methode.equals("get") && pathInfo.equals(m_doListeGroupes)) {
+            doListeGroupes(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doDetailGroupe)) {
+            doDetailGroupe(request, response);
+        }
+        //default
+        else {
             doAccueil(request, response);
         }
     }
 
-    //
-    private void doDetail(HttpServletRequest request,
-                           HttpServletResponse response) throws ServletException, IOException {
-        Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
 
-        request.setAttribute("etudiant", etudiant);
-        loadJSP(urlDetailEtudiants, request, response);
-    }
 
-    //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Default
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void doAccueil(HttpServletRequest request,
                        HttpServletResponse response) throws ServletException, IOException {
         includeJSP(urlAccueil, request, response);
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Etudiant
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void doListeEtudiants(HttpServletRequest request,
                            HttpServletResponse response) throws ServletException, IOException {
         // Récupérer les étudiants
@@ -117,7 +132,37 @@ public class Controleur extends HttpServlet {
         loadJSP(urlListeEtudiants, request, response);
     }
 
+    //
+    private void doDetailEtudiant(HttpServletRequest request,
+                                  HttpServletResponse response) throws ServletException, IOException {
+        Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
 
+        request.setAttribute("etudiant", etudiant);
+        loadJSP(urlDetailEtudiants, request, response);
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Groupes
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void doListeGroupes(HttpServletRequest request,
+                                  HttpServletResponse response) throws ServletException, IOException {
+        // Récupérer les groupes
+        List<Groupe> groupes = GroupeDAO.getAll();
+
+        // Ajouter les étudiants à la requête pour affichage
+        request.setAttribute("groupes", groupes);
+
+        loadJSP(urlListeGroupes, request, response);
+    }
+
+    private void doDetailGroupe(HttpServletRequest request,
+                                  HttpServletResponse response) throws ServletException, IOException {
+        Groupe groupe = GroupeDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
+
+        request.setAttribute("groupe", groupe);
+        loadJSP(urlDetailGroupe, request, response);
+    }
     /**
      * Charge la JSP indiquée en paramètre
      *

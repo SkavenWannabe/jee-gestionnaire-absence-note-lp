@@ -16,13 +16,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletListeEtudiant")%>"
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletListeEtudiants")%>"
                        class="px-4 py-2 hover:text-slate-800 hover:bg-white">
                         Etudiants
                     </a>
                 </li>
                 <li>
-                    <a href="todo.com.existepas.tmtc.clong.m"
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletListeGroupes")%>"
                        class="px-4 py-2 hover:text-slate-800 hover:bg-white">
                         Groupes
                     </a>

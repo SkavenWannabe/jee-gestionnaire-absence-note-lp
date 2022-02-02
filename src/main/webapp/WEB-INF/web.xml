@@ -18,29 +18,35 @@
         <param-name>urlListeEtudiants</param-name>
         <param-value>/listeEtudiants.jsp</param-value>
     </context-param>
-    <context-param>
-        <param-name>groupes</param-name>
-        <param-value>TODO</param-value>
-    </context-param>
 
     <!-- param servlet -->
     <context-param>
-        <param-name>servletListeEtudiant</param-name>
+        <param-name>servletListeEtudiants</param-name>
         <param-value>/listeEtudiant</param-value>
     </context-param>
     <context-param>
         <param-name>servletDetailEtudiant</param-name>
         <param-value>/detailEtudiant</param-value>
     </context-param>
+    <context-param>
+        <param-name>servletListeGroupes</param-name>
+        <param-value>/listeGroupes</param-value>
+    </context-param>
+    <context-param>
+        <param-name>servletDetailGroupe</param-name>
+        <param-value>/detailGroupe</param-value>
+    </context-param>
     <!-- Servlet controleur -->
     <servlet>
         <servlet-name>controleur</servlet-name>
         <servlet-class>uga.carminav.carminavgestionnaireabsencenote.controleur.Controleur</servlet-class>
         <!-- URL -->
+        <!-- default -->
         <init-param>
             <param-name>urlAccueil</param-name>
             <param-value>/index.jsp</param-value>
         </init-param>
+        <!-- Etudiants -->
         <init-param>
             <param-name>urlListeEtudiants</param-name>
             <param-value>/listeEtudiants.jsp</param-value>
@@ -49,14 +55,14 @@
             <param-name>urlDetailEtudiant</param-name>
             <param-value>/detailEtudiant.jsp</param-value>
         </init-param>
-        <!-- Servlet commande-->
+        <!-- Groupe -->
         <init-param>
-            <param-name>servletListeEtudiant</param-name>
-            <param-value>/listeEtudiant</param-value>
+            <param-name>urlListeGroupes</param-name>
+            <param-value>/listeGroupes.jsp</param-value>
         </init-param>
         <init-param>
-            <param-name>servletDetailEtudiant</param-name>
-            <param-value>/detailEtudiant</param-value>
+            <param-name>urlDetailGroupe</param-name>
+            <param-value>/detailGroupe.jsp</param-value>
         </init-param>
     </servlet>
 
