@@ -1,4 +1,3 @@
-<%@ page import="uga.carminav.carminavgestionnaireabsencenote.data.Etudiant" %>
 <%@ page import="uga.carminav.carminavgestionnaireabsencenote.data.Groupe" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <jsp:include page="common/header.jsp"/>
@@ -17,6 +16,7 @@
 </article>
 
 <table class="table-fixed border-collapse m-4">
+    <caption class="border-b border-slate-700 m-2 text-xl w-48">Liste des groupes</caption>
     <thead>
     <tr>
         <th class="border-2 border-slate-800 p-2">id</th>
@@ -31,7 +31,7 @@
                     <%= groupe.getId()%>
                 </a>
             </td>
-            <td class="border-2 border-slate-800">
+            <td class="border-2 border-slate-800 text-center">
                 <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailGroupe")%>?id=<%=groupe.getId()%>" class="w-full h-full block p-2">
                     <%= groupe.getNom()%>
                 </a>

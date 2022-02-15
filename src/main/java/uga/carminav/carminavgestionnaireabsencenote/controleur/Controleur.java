@@ -22,6 +22,7 @@ public class Controleur extends HttpServlet {
     private String urlAccueil;
     private String urlListeEtudiants;
     private String urlDetailEtudiants;
+    private String urlFormCreateEtudiants;
     private String urlListeGroupes;
     private String urlDetailGroupe;
 
@@ -29,6 +30,9 @@ public class Controleur extends HttpServlet {
     // ACTION
     private String m_doListeEtudiants;
     private String m_doDetailEtudiant;
+    private String m_doFormCreateEtudiant;
+    private String m_doCreateEtudiant;
+    private String m_doDeleteEtudiant;
     private String m_doListeGroupes;
     private String m_doDetailGroupe;
 
@@ -37,11 +41,15 @@ public class Controleur extends HttpServlet {
         urlAccueil = getInitParameter("urlAccueil");
         urlListeEtudiants = getInitParameter("urlListeEtudiants");
         urlDetailEtudiants = getInitParameter("urlDetailEtudiant");
+        urlFormCreateEtudiants = getInitParameter("urlFormCreateEtudiant");
         urlListeGroupes = getInitParameter("urlListeGroupes");
         urlDetailGroupe = getInitParameter("urlDetailGroupe");
 
         m_doListeEtudiants = getServletContext().getInitParameter("servletListeEtudiants");
         m_doDetailEtudiant = getServletContext().getInitParameter("servletDetailEtudiant");
+        m_doFormCreateEtudiant = getServletContext().getInitParameter("servletFormCreateEtudiant");
+        m_doCreateEtudiant = getServletContext().getInitParameter("servletCreateEtudiant");
+        m_doDeleteEtudiant = getServletContext().getInitParameter("servletDeleteEtudiant");
         m_doListeGroupes = getServletContext().getInitParameter("servletListeGroupes");
         m_doDetailGroupe = getServletContext().getInitParameter("servletDetailGroupe");
 
@@ -95,6 +103,12 @@ public class Controleur extends HttpServlet {
             doListeEtudiants(request, response);
         } else if(methode.equals("get") && pathInfo.equals(m_doDetailEtudiant)) {
             doDetailEtudiant(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doFormCreateEtudiant)) {
+            doFormCreateEtudiant(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doCreateEtudiant)) {
+            doCreateEtudiant(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doDeleteEtudiant)) {
+            doDeleteEtudiant(request, response);
         }
         //Groupe
         else if(methode.equals("get") && pathInfo.equals(m_doListeGroupes)) {
@@ -141,6 +155,33 @@ public class Controleur extends HttpServlet {
         loadJSP(urlDetailEtudiants, request, response);
     }
 
+    private void doFormCreateEtudiant(HttpServletRequest request,
+                                      HttpServletResponse response) throws ServletException, IOException {
+        //on récupère la liste des groupes pour le select du formulaire
+        List<Groupe> groupes = GroupeDAO.getAll();
+
+        request.setAttribute("groupes", groupes);
+        loadJSP(urlFormCreateEtudiants, request, response);
+    }
+
+    private void doCreateEtudiant(HttpServletRequest request,
+                                      HttpServletResponse response) throws ServletException, IOException {
+        String prenom = request.getParameter("prenom");
+        String nom = request.getParameter("nom");
+        float moyenne = Float.parseFloat(request.getParameter("moyenne"));
+        Groupe groupe = GroupeDAO.retrieveById(Integer.parseInt(request.getParameter("groupeId")));
+        Etudiant etudiant = EtudiantDAO.create(prenom, nom, groupe,moyenne);
+
+        request.setAttribute("etudiant", etudiant);
+        loadJSP(urlDetailEtudiants, request, response);
+    }
+
+    private void doDeleteEtudiant(HttpServletRequest request,
+                                  HttpServletResponse response) throws ServletException, IOException {
+        EtudiantDAO.remove(Integer.parseInt(request.getParameter("id")));
+
+        doListeEtudiants(request, response);
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Groupes

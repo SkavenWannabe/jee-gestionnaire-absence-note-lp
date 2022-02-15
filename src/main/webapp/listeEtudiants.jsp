@@ -10,7 +10,10 @@
             <p>Consulter la liste des étudiants.</p>
         </li>
         <li>
-            <p>En cliquant sur une ligne correspondante à un étudiant, vous serez redirigés vers les détails de cet étudiant</p>
+            <p>En cliquant sur une ligne correspondante à un étudiant, vous serez redirigés vers les détails de cet étudiant.</p>
+        </li>
+        <li>
+            <p>Il est possible de créer un étudiant grâce au button en bas du tableau.</p>
         </li>
     </ul>
 </article>
@@ -46,4 +49,9 @@
         <%  } %>
     </tbody>
 </table>
+
+<a href="<%=application.getContextPath()%>/do<%=application.getInitParameter("servletFormCreateEtudiant")%>"
+    class="border-2 border-slate-800 p-2 ml-4 hover:text-white hover:bg-slate-800 hover:cursor-pointer">
+    Créer un étudiant
+</a>
 <jsp:include page="common/footer.jsp"/>
