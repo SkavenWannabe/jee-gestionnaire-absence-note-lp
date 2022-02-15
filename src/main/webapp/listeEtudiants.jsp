@@ -24,6 +24,9 @@
             <th class="border-2 border-slate-800 p-2">id</th>
             <th class="border-2 border-slate-800 p-2">nom</th>
             <th class="border-2 border-slate-800 p-2">prenom</th>
+            <th class="border-2 border-slate-800 p-2">Moyenne</th>
+            <th class="border-2 border-slate-800 p-2">Absences</th>
+            <th class="border-2 border-slate-800 p-2">Groupe</th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +45,21 @@
                 <td class="border-2 border-slate-800">
                     <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
                         <%= etudiant.getPrenom()%>
+                    </a>
+                </td>
+                <td class="border-2 border-slate-800">
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
+                        <%= etudiant.getMoyenne()%>
+                    </a>
+                </td>
+                <td class="border-2 border-slate-800">
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
+                        <%= etudiant.getNbAbsences()%>
+                    </a>
+                </td>
+                <td class="border-2 border-slate-800">
+                    <a href="<%= application.getContextPath()%>/do<%=application.getInitParameter("servletDetailEtudiant")%>?id=<%=etudiant.getId()%>" class="w-full h-full block p-2">
+                        <%= etudiant.getGroupe().getNom()%>
                     </a>
                 </td>
             </tr>
