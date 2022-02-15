@@ -37,6 +37,14 @@
         <param-value>/createEtudiant</param-value>
     </context-param>
     <context-param>
+        <param-name>servletFormEditEtudiant</param-name>
+        <param-value>/FormEditEtudiant</param-value>
+    </context-param>
+    <context-param>
+        <param-name>servletEditEtudiant</param-name>
+        <param-value>/EditEtudiant</param-value>
+    </context-param>
+    <context-param>
         <param-name>servletDeleteEtudiant</param-name>
         <param-value>/deleteEtudiant</param-value>
     </context-param>
@@ -70,6 +78,10 @@
         <init-param>
             <param-name>urlFormCreateEtudiant</param-name>
             <param-value>/creationEtudiant.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>urlFormEditEtudiant</param-name>
+            <param-value>/editEtudiant.jsp</param-value>
         </init-param>
         <!-- Groupe -->
         <init-param>

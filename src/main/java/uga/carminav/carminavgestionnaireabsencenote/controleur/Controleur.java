@@ -23,6 +23,7 @@ public class Controleur extends HttpServlet {
     private String urlListeEtudiants;
     private String urlDetailEtudiants;
     private String urlFormCreateEtudiants;
+    private String urlFormEditEtudiant;
     private String urlListeGroupes;
     private String urlDetailGroupe;
 
@@ -31,7 +32,9 @@ public class Controleur extends HttpServlet {
     private String m_doListeEtudiants;
     private String m_doDetailEtudiant;
     private String m_doFormCreateEtudiant;
+    private String m_doFormEditEtudiant;
     private String m_doCreateEtudiant;
+    private String m_doEditEtudiant;
     private String m_doDeleteEtudiant;
     private String m_doListeGroupes;
     private String m_doDetailGroupe;
@@ -42,13 +45,16 @@ public class Controleur extends HttpServlet {
         urlListeEtudiants = getInitParameter("urlListeEtudiants");
         urlDetailEtudiants = getInitParameter("urlDetailEtudiant");
         urlFormCreateEtudiants = getInitParameter("urlFormCreateEtudiant");
+        urlFormEditEtudiant = getInitParameter("urlFormEditEtudiant");
         urlListeGroupes = getInitParameter("urlListeGroupes");
         urlDetailGroupe = getInitParameter("urlDetailGroupe");
 
         m_doListeEtudiants = getServletContext().getInitParameter("servletListeEtudiants");
         m_doDetailEtudiant = getServletContext().getInitParameter("servletDetailEtudiant");
         m_doFormCreateEtudiant = getServletContext().getInitParameter("servletFormCreateEtudiant");
+        m_doFormEditEtudiant = getServletContext().getInitParameter("servletFormEditEtudiant");
         m_doCreateEtudiant = getServletContext().getInitParameter("servletCreateEtudiant");
+        m_doEditEtudiant = getServletContext().getInitParameter("servletEditEtudiant");
         m_doDeleteEtudiant = getServletContext().getInitParameter("servletDeleteEtudiant");
         m_doListeGroupes = getServletContext().getInitParameter("servletListeGroupes");
         m_doDetailGroupe = getServletContext().getInitParameter("servletDetailGroupe");
@@ -105,8 +111,12 @@ public class Controleur extends HttpServlet {
             doDetailEtudiant(request, response);
         } else if(methode.equals("get") && pathInfo.equals(m_doFormCreateEtudiant)) {
             doFormCreateEtudiant(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doFormEditEtudiant)) {
+            doFormEditEtudiant(request, response);
         } else if(methode.equals("get") && pathInfo.equals(m_doCreateEtudiant)) {
             doCreateEtudiant(request, response);
+        } else if(methode.equals("get") && pathInfo.equals(m_doEditEtudiant)) {
+            doEditEtudiant(request, response);
         } else if(methode.equals("get") && pathInfo.equals(m_doDeleteEtudiant)) {
             doDeleteEtudiant(request, response);
         }
@@ -164,6 +174,18 @@ public class Controleur extends HttpServlet {
         loadJSP(urlFormCreateEtudiants, request, response);
     }
 
+    private void doFormEditEtudiant(HttpServletRequest request,
+                                      HttpServletResponse response) throws ServletException, IOException {
+        //on récupère la liste des groupes pour le select du formulaire
+        List<Groupe> groupes = GroupeDAO.getAll();
+
+        Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
+
+        request.setAttribute("etudiant", etudiant);
+        request.setAttribute("groupes", groupes);
+        loadJSP(urlFormEditEtudiant, request, response);
+    }
+
     private void doCreateEtudiant(HttpServletRequest request,
                                       HttpServletResponse response) throws ServletException, IOException {
         String prenom = request.getParameter("prenom");
@@ -175,6 +197,25 @@ public class Controleur extends HttpServlet {
         request.setAttribute("etudiant", etudiant);
         loadJSP(urlDetailEtudiants, request, response);
     }
+
+    private void doEditEtudiant(HttpServletRequest request,
+                                  HttpServletResponse response) throws ServletException, IOException {
+
+        Etudiant etudiant = new Etudiant();
+
+        etudiant.setId(Integer.parseInt(request.getParameter("idEtudiant")));
+        etudiant.setPrenom(request.getParameter("prenom"));
+        etudiant.setNom(request.getParameter("nom"));
+        etudiant.setMoyenne(Float.parseFloat(request.getParameter("moyenne")));
+        etudiant.setNbAbsences(Integer.parseInt(request.getParameter("absence")));
+        etudiant.setGroupe(GroupeDAO.retrieveById(Integer.parseInt(request.getParameter("groupeId"))));
+
+        etudiant = EtudiantDAO.update(etudiant);
+
+        request.setAttribute("etudiant", etudiant);
+        loadJSP(urlDetailEtudiants, request, response);
+    }
+
 
     private void doDeleteEtudiant(HttpServletRequest request,
                                   HttpServletResponse response) throws ServletException, IOException {

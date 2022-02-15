@@ -44,7 +44,7 @@
 </table>
 
 <div class="mt-4">
-    <a href=""
+    <a href="<%=application.getContextPath()%>/do<%=application.getInitParameter("servletFormEditEtudiant")%>?id=<%=etudiant.getId()%>"
        class="border-2 border-slate-800 p-2 hover:text-white hover:bg-slate-800 hover:cursor-pointer">
         Editer
     </a>
