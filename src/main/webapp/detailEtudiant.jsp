@@ -6,14 +6,15 @@
     <p>Ici vous pouvez :</p>
     <ul class="ml-8 list-disc">
         <li>
-            <p>Consulter les données liées à l'étudiants sélectionner précédemment.</p>
+            Consulter les données liées à l'étudiant sélectionner précédemment.
         </li>
         <li>
-            en cliquant sur le groupe, vous pouvez accéder à la fiche du groupe correspondant.
+            En cliquant sur le groupe, vous pouvez accéder à la fiche du groupe correspondant.
         </li>
         <li>
-            Supprimer l'étudiant grâce au button sous le tableau d'informations.
+            Supprimer ou éditer l'étudiant grâce aux buttons sous le tableau d'informations.
         </li>
+
     </ul>
 </article>
 

@@ -10,7 +10,7 @@
             <p>Consulter la liste des étudiants.</p>
         </li>
         <li>
-            <p>En cliquant sur une ligne correspondante à un étudiant, vous serez redirigés vers les détails de cet étudiant.</p>
+            <p>En cliquant sur une ligne correspondant à un étudiant, vous serez redirigés vers les détails de cet étudiant.</p>
         </li>
         <li>
             <p>Il est possible de créer un étudiant grâce au button en bas du tableau.</p>
